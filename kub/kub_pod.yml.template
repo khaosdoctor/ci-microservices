@@ -12,5 +12,9 @@ spec:
       env:
       - name: PORT
         value: "${PORT}"
+      - name: API_USER_ID
+        value: "${API_USER_ID}"
+      - name: API_USER_SECRET
+        value: "${API_USER_SECRET}"
       ports:
         - containerPort: ${PORT}
