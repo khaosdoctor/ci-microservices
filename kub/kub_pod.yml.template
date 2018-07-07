@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ${SERVICE_NAME}-pod
+  namespace: default
+  labels:
+    app: ${SERVICE_NAME}-pod
+spec:
+  containers:
+    - name: ${SERVICE_NAME}
+      image: khaosdoctor/tdc-ci-microservices:${IMAGE_TAG}
+      env:
+      - name: PORT
+        value: "${PORT}"
+      ports:
+        - containerPort: ${PORT}
