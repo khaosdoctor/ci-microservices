@@ -18,3 +18,5 @@ spec:
         value: "${API_USER_SECRET}"
       ports:
         - containerPort: ${PORT}
+  imagePullSecrets:
+    - name: dockersecret
