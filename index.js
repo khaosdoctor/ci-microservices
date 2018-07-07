@@ -51,7 +51,7 @@ async function serverHandler (request, response) {
     const talk = await getTalk(accessToken, 8704)
     const presenter = await getPresenter(accessToken, 8704)
     talk.palestrantes = presenter
-    response.writeHead(200, {'Content-Type': 'application/json'})
+    response.writeHead(200, {'Content-Type': 'application/json', 'X-Test': '123'})
     response.write(JSON.stringify(talk))
   } catch (e) {
     response.statusCode = 500
