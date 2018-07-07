@@ -1,0 +1,55 @@
+# Qual é a imagem base que vamos utilizar
+box: node:8.4
+
+# Definição do primeiro step
+build:
+  steps:
+    - npm-install
+    - script:
+      name: gerar tag de imagem
+      code: |
+        export PACKAGE_VERSION=$(node -p "require('./package.json').version")
+        export IMAGE_TAG=$PACKAGE_VERSION
+        echo "$IMAGE_TAG" >> $WERCKER_SOURCE_DIR/.image_tag
+# Definição do step de testes
+test:
+  steps:
+    - npm-test
+
+# Definição do step de push
+docker-push:
+  steps:
+    - script:
+      name: recupera tag de imagem
+      code: |
+        export IMAGE_TAG=$(cat $WERCKER_SOURCE_DIR/.image_tag)
+    - internal/docker-push:
+        username: $DOCKER_USER
+        password: $DOCKER_PASS
+        repository: $DOCKER_REPO
+        tag: $IMAGE_TAG
+        working-dir: $WERCKER_SOURCE_DIR
+        entrypoint: npm start
+
+# Definição do step do kubernetes
+deploy:
+  steps:
+    - script:
+      name: parsear templates
+      code: |
+        export IMAGE_TAG=$(cat $WERCKER_SOURCE_DIR/.image_tag)
+        mv $WERCKER_SOURCE_DIR/kub/kub_*.template $WERCKER_SOURCE_DIR
+
+    - bash-template
+
+    - script:
+      name: movimentar templates
+      code: |
+        mv $WERCKER_SOURCE_DIR/kub_*.* $WERCKER_SOURCE_DIR/kub
+    - riceo/kubectl:
+        server: $GCE_KUBERNETES_MASTER
+        gcloud-key-json: $GCP_KEY_JSON
+        gke-cluster-name: $GCE_CLUSTER_NAME
+        gke-cluster-zone: $GCE_CLUSTER_ZONE
+        gke-cluster-project: $GCE_CLUSTER_PROJECT
+        command: apply -f $WERCKER_SOURCE_DIR/kub/
