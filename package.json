@@ -1,0 +1,22 @@
+{
+  "name": "tdc-ci-microservices",
+  "version": "1.0.0",
+  "description": "Exemplo de microsserviços usando Wercker",
+  "main": "index.js",
+  "repository": "https://github.com/khaosdoctor/tdc-ci-microservices.git",
+  "author": "Lucas Santos <lhs.santoss@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "start-dev": "export PORT=3456 && node index.js",
+    "start": "node index.js",
+    "test": "standard -v"
+  },
+  "private": true,
+  "dependencies": {
+    "axios": "^0.18.0",
+    "dotenv": "^6.0.0"
+  },
+  "devDependencies": {
+    "standard": "^11.0.1"
+  }
+}
