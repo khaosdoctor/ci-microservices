@@ -1,6 +1,6 @@
 {
   "name": "tdc-ci-microservices",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Exemplo de microsserviços usando Wercker",
   "main": "index.js",
   "repository": "https://github.com/khaosdoctor/tdc-ci-microservices.git",
